@@ -4,11 +4,11 @@ node {
         checkout scm
     }
 
-    stage('Check Tools') {
-        bat 'terraform --version'
-        bat 'docker --version'
-        bat 'aws --version'
-    }
+   stage('Check Tools') {
+    bat 'terraform --version'
+    bat 'docker --version'
+    bat '"C:\\Users\\santh\\AppData\\Local\\Programs\\Amazon\\AWSCLIV2\\aws.exe" --version'
+}
 
     stage('Terraform Init') {
         dir('terraform') {
