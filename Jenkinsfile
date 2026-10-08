@@ -4,27 +4,51 @@ node {
         checkout scm
     }
 
-   stage('Check Tools') {
-    bat 'terraform --version'
-    bat 'docker --version'
-    bat '"C:\\Users\\santh\\AppData\\Local\\Programs\\Amazon\\AWSCLIV2\\aws.exe" --version'
-}
+    stage('Check Tools') {
+        bat 'terraform --version'
+        bat 'docker --version'
+        bat '"C:\\Users\\santh\\AppData\\Local\\Programs\\Amazon\\AWSCLIV2\\aws.exe" --version'
+    }
 
     stage('Terraform Init') {
-        dir('terraform') {
-            bat 'terraform init'
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'aws-credentials',
+                usernameVariable: 'AWS_ACCESS_KEY_ID',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            )
+        ]) {
+            dir('terraform') {
+                bat 'terraform init'
+            }
         }
     }
 
     stage('Terraform Plan') {
-        dir('terraform') {
-            bat 'terraform plan'
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'aws-credentials',
+                usernameVariable: 'AWS_ACCESS_KEY_ID',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            )
+        ]) {
+            dir('terraform') {
+                bat 'terraform plan'
+            }
         }
     }
 
     stage('Terraform Apply') {
-        dir('terraform') {
-            bat 'terraform apply -auto-approve'
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'aws-credentials',
+                usernameVariable: 'AWS_ACCESS_KEY_ID',
+                passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+            )
+        ]) {
+            dir('terraform') {
+                bat 'terraform apply -auto-approve'
+            }
         }
     }
 
