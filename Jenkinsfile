@@ -1,18 +1,19 @@
 pipeline {
     agent any
-    
-    stage('Check Tools') {
-    steps {
-        bat 'terraform --version'
-        bat 'docker --version'
-        bat 'aws --version'
-    }
-}
+
     stages {
 
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Check Tools') {
+            steps {
+                bat 'terraform --version'
+                bat 'docker --version'
+                bat 'aws --version'
             }
         }
 
@@ -67,4 +68,4 @@ pipeline {
             }
         }
     }
-}
+}git 
